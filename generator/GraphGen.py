@@ -184,3 +184,5 @@ def write_to_database(num):
     collection = client["MintDB"]["graphs"]
     collection.insert_many(graphs)
     client.close()
+
+def from_colab: pass
