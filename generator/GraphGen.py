@@ -185,4 +185,4 @@ def write_to_database(num):
     collection.insert_many(graphs)
     client.close()
 
-def from_colab: pass
+def from_colab_again(): pass
