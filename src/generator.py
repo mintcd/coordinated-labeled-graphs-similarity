@@ -106,3 +106,17 @@ class GraphGen:
       attr['pos'] = list(param['scaling']*np.matmul(rotationMatrix, attr['pos']) + param['translation'])
 
     return img
+
+  def inversed_similarism(graph, param=None):
+
+      if not param: param = ParamGen.random()
+      rotationMatrix = MatrixGen.rotation(param)
+
+      img = deepcopy(graph)
+      img.graph['param'] = param
+
+      for _, attr in img.nodes(data=True):
+        attr['pos'] = list(param['scaling']*np.matmul(rotationMatrix, attr['pos']) + param['translation'])    
+        attr['pos'][0] = -attr['pos'][0]
+
+      return img

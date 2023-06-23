@@ -45,7 +45,8 @@ class Visualizer:
 
   def convexhulls(graphs):
     fig, ax = plt.subplots()
-    Visualizer.convexhull(graphs[0], 'green', ax)
-    Visualizer.convexhull(graphs[1], 'blue', ax)
+    colors = ['red', 'green', 'blue', 'orange', 'purple']
+    for i, graph in enumerate(graphs):
+      Visualizer.convexhull(graph, colors[i % len(colors)], ax)
 
     plt.show()
