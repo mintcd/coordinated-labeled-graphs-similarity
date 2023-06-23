@@ -7,6 +7,7 @@ from math import pi, sin, cos
 from itertools import combinations
 from copy import deepcopy
 from pymongo import MongoClient
+from manipulator import Manipulator
 
 SCALE_LIMIT = 5
 TRANS_LIMIT = 100
@@ -94,7 +95,7 @@ class GraphGen:
 
     return G
   
-  def similarism(graph, param=None):
+  def similarism(graph, param=None, shuffle=True):
 
     if not param: param = ParamGen.random()
     rotationMatrix = MatrixGen.rotation(param)
@@ -105,9 +106,11 @@ class GraphGen:
     for _, attr in img.nodes(data=True):
       attr['pos'] = list(param['scaling']*np.matmul(rotationMatrix, attr['pos']) + param['translation'])
 
+    if shuffle: img = Manipulator.shuffled_graph(img)
+
     return img
 
-  def inversed_similarism(graph, param=None):
+  def inversed_similarism(graph, param=None, shuffle=True):
 
       if not param: param = ParamGen.random()
       rotationMatrix = MatrixGen.rotation(param)
@@ -118,5 +121,7 @@ class GraphGen:
       for _, attr in img.nodes(data=True):
         attr['pos'] = list(param['scaling']*np.matmul(rotationMatrix, attr['pos']) + param['translation'])    
         attr['pos'][0] = -attr['pos'][0]
+        
+      if shuffle: img = Manipulator.shuffled_graph(img)
 
       return img
