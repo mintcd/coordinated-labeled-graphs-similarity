@@ -32,21 +32,21 @@ def param(dim=2):
   return param
 
 class Matrix:
-  def __rotationX(param):
-    alpha = param['rotation']['angles'][0]
+  def __rotationX(_param):
+    alpha = _param['rotation']['angles'][0]
 
     return np.array([[cos(alpha), -sin(alpha), 0],
                   [sin(alpha), cos(alpha), 0],
                   [0, 0, 1]])
 
-  def __rotationY(param):
-    beta = param['rotation']['angles'][1]
+  def __rotationY(_param):
+    beta = _param['rotation']['angles'][1]
     return np.array([[cos(beta), 0, sin(beta)],
                   [0, 1, 0],
                   [-sin(beta), 0, cos(beta)]])
 
-  def __rotationZ(param):
-    gamma = param['rotation']['angles'][2]
+  def __rotationZ(_param):
+    gamma = _param['rotation']['angles'][2]
     return np.array([[1, 0, 1],
                   [0, cos(gamma), -sin(gamma)],
                   [0, sin(gamma), cos(gamma)]])
