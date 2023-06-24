@@ -7,7 +7,6 @@ from math import pi, sin, cos
 from itertools import combinations
 from copy import deepcopy
 from pymongo import MongoClient
-from manipulator import Manipulator
 
 SCALE_LIMIT = 5
 TRANS_LIMIT = 100
@@ -91,34 +90,3 @@ class Graph:
     G.add_edges_from(sample(list(combinations(range(nodeNum), 2)), edgeNum))
 
     return G
-  
-  def similarism(graph, param=None, shuffle=True):
-
-    if not param: param = ParamGen.random()
-    rotationMatrix = MatrixGen.rotation(param)
-
-    img = deepcopy(graph)
-    img.graph['param'] = param
-
-    for _, attr in img.nodes(data=True):
-      attr['pos'] = list(param['scaling']*np.matmul(rotationMatrix, attr['pos']) + param['translation'])
-
-    if shuffle: img = Manipulator.shuffled_graph(img)
-
-    return img
-
-  def inversed_similarism(graph, param=None, shuffle=True):
-
-      if not param: param = ParamGen.random()
-      rotationMatrix = MatrixGen.rotation(param)
-
-      img = deepcopy(graph)
-      img.graph['param'] = param
-
-      for _, attr in img.nodes(data=True):
-        attr['pos'] = list(param['scaling']*np.matmul(rotationMatrix, attr['pos']) + param['translation'])    
-        attr['pos'][0] = -attr['pos'][0]
-        
-      if shuffle: img = Manipulator.shuffled_graph(img)
-
-      return img
