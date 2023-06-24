@@ -21,18 +21,36 @@ def shuffle_graph(G):
 
   return shuffled_G
 
+def congruent_graph(G, _param=None, shuffle=True, reflect=False):
+  if not _param: _param = generator.param()
+  rotationMatrix = generator.Matrix.rotation(_param)
+
+  img = copy.deepcopy(G)
+  img.graph['param'] = _param
+
+  for _, attr in img.nodes(data=True):
+    attr['pos'] = np.matmul(rotationMatrix, attr['pos']) + _param['translation']
+    if reflect : attr['pos'][0] = -attr['pos'][0]
+    attr['pos'] =  attr['pos']
+
+  if shuffle: img = shuffle_graph(img)
+
+  return img
+
 def similarize_graph(G, _param=None, shuffle=True, reflect=False):
-    if not _param: _param = generator.param()
-    rotationMatrix = generator.Matrix.rotation(_param)
+  if not _param: _param = generator.param()
+  rotationMatrix = generator.Matrix.rotation(_param)
 
-    img = copy.deepcopy(G)
-    img.graph['param'] = _param
+  img = copy.deepcopy(G)
+  img.graph['param'] = _param
 
-    for _, attr in img.nodes(data=True):
-      attr['pos'] = list(_param['scaling']*np.matmul(rotationMatrix, attr['pos']) + _param['translation'])
-      if reflect : attr['pos'][0] = -attr['pos'][0]
-      attr['pos'] =  list(attr['pos'])
+  for _, attr in img.nodes(data=True):
+    attr['pos'] = _param['scaling']*np.matmul(rotationMatrix, attr['pos']) + _param['translation']
+    if reflect : attr['pos'][0] = -attr['pos'][0]
+    attr['pos'] =  attr['pos']
 
-    if shuffle: img = shuffle_graph(img)
+  if shuffle: img = shuffle_graph(img)
 
-    return img
+  return img
+
+def rotate_graph_2d(G): pass
