@@ -1,4 +1,4 @@
-from random import shuffle
+from random import shuffle, randint, sample
 import networkx as nx
 import copy
 from src import generator
@@ -52,5 +52,23 @@ def similarize_graph(G, _param=None, shuffle=True, reflect=False):
   if shuffle: img = shuffle_graph(img)
 
   return img
+
+def centroid(G):
+  return np.mean([attr['pos'] for _, attr in G.nodes(data=True)], axis=0)
+
+def translate(G, vec=None):
+  if not vec: vec = centroid(G)
+  img = copy.deepcopy(G)
+
+  for _, attr in img.nodes(data=True):
+    attr['pos'] = attr['pos'] - vec
+
+  return img
+
+def modify_graph(G : nx.Graph, shuffle=True, remain_structure=True):
+  number_of_modified_nodes = randint(1, G.number_of_nodes())
+  modified_nodes = sample(list(range(G.number_of_nodes())), number_of_modified_nodes)
+  nodes = G.nodes()
+  # Coming soons
 
 def rotate_graph_2d(G): pass
