@@ -58,9 +58,9 @@ class Matrix:
       matrices = []
 
       def appendMatrix(matrices, number):
-        if number == 0: matrices.append(Matrix.__rotationX(param))
-        if number == 1: matrices.append(Matrix.__rotationY(param))
-        if number == 2: matrices.append(Matrix.__rotationZ(param))
+        if number == 0: matrices.append(Matrix.__rotationX(_param))
+        if number == 1: matrices.append(Matrix.__rotationY(_param))
+        if number == 2: matrices.append(Matrix.__rotationZ(_param))
 
       [appendMatrix(matrices, number) for number in order]
 
