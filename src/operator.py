@@ -1,7 +1,7 @@
 from random import shuffle
 import networkx as nx
 import copy
-import generator
+from src import generator
 import numpy as np
 
 

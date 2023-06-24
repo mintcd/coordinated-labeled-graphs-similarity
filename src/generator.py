@@ -72,21 +72,20 @@ class Matrix:
                                  [sin(alpha), cos(alpha)]])
     return rotationMatrix
 
-class Graph:
-  def random(nodeNum=None, edgeNum=None, dimension=DIMENSION, labelLimit=LABEL_LIMIT):
-    
-    G = nx.Graph()
-    G.graph['dim'] = dimension
+def graph(nodeNum=None, edgeNum=None, dimension=DIMENSION, labelLimit=LABEL_LIMIT):
+  
+  G = nx.Graph()
+  G.graph['dim'] = dimension
 
-    if not nodeNum: nodeNum = randint(2, NODE_LIMIT)
-    if not edgeNum: edgeNum = randint(0, int(nodeNum / 2 * (nodeNum - 1)))
+  if not nodeNum: nodeNum = randint(2, NODE_LIMIT)
+  if not edgeNum: edgeNum = randint(0, int(nodeNum / 2 * (nodeNum - 1)))
 
-    # Generate nodes
-    coordinates = [[randint(-POINT_LIMIT, POINT_LIMIT) for _ in range(dimension)] for _ in range(nodeNum)]
-    G.add_nodes_from([(i, {'label': choice(range(labelLimit)),
-                            'pos': coordinates[i]}) for i in range(nodeNum)])
+  # Generate nodes
+  coordinates = [[randint(-POINT_LIMIT, POINT_LIMIT) for _ in range(dimension)] for _ in range(nodeNum)]
+  G.add_nodes_from([(i, {'label': choice(range(labelLimit)),
+                          'pos': coordinates[i]}) for i in range(nodeNum)])
 
-    # Generate edges
-    G.add_edges_from(sample(list(combinations(range(nodeNum), 2)), edgeNum))
+  # Generate edges
+  G.add_edges_from(sample(list(combinations(range(nodeNum), 2)), edgeNum))
 
-    return G
+  return G
