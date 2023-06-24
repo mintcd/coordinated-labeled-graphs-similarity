@@ -16,25 +16,23 @@ NODE_LIMIT = 100
 DIMENSION = 2
 LABEL_LIMIT = 20
 
-class ParamGen:
-  @staticmethod
-  def random(dim=2):
-    param = {}
+def param(dim=2):
+  param = {}
 
-    param['dim'] = dim
-    param['rotation'] = {}
-    if dim == 2:
-        param['rotation']['angle'] = round(uniform(-pi, pi), 2)
-    elif dim == 3:
-        param['rotation']['angles'] = [round(uniform(-pi, pi), 2) for _ in range(dim)]
-        param['rotation']['order'] = sample([0, 1, 2], 3)
+  param['dim'] = dim
+  param['rotation'] = {}
+  if dim == 2:
+      param['rotation']['angle'] = round(uniform(-pi, pi), 2)
+  elif dim == 3:
+      param['rotation']['angles'] = [round(uniform(-pi, pi), 2) for _ in range(dim)]
+      param['rotation']['order'] = sample([0, 1, 2], 3)
 
-    param['scaling'] = round(uniform(-SCALE_LIMIT, SCALE_LIMIT), 2)
-    param['translation'] = [round(uniform(-TRANS_LIMIT, TRANS_LIMIT), 2) for _ in range(dim)]
+  param['scaling'] = round(uniform(-SCALE_LIMIT, SCALE_LIMIT), 2)
+  param['translation'] = [round(uniform(-TRANS_LIMIT, TRANS_LIMIT), 2) for _ in range(dim)]
 
-    return param
+  return param
 
-class MatrixGen:
+class Matrix:
   def __rotationX(param):
     alpha = param['rotation']['angles'][0]
 
@@ -54,29 +52,28 @@ class MatrixGen:
                   [0, cos(gamma), -sin(gamma)],
                   [0, sin(gamma), cos(gamma)]])
 
-  def rotation(param = None):
-    if not param: param = ParamGen.random()
-    if param['dim'] == 3:
-      order = param['rotation']['order']
+  def rotation(_param = None):
+    if not _param: _param = param()
+    if _param['dim'] == 3:
+      order = _param['rotation']['order']
       matrices = []
 
       def appendMatrix(matrices, number):
-        if number == 0: matrices.append(MatrixGen.__rotationX(param))
-        if number == 1: matrices.append(MatrixGen.__rotationY(param))
-        if number == 2: matrices.append(MatrixGen.__rotationZ(param))
+        if number == 0: matrices.append(Matrix.__rotationX(param))
+        if number == 1: matrices.append(Matrix.__rotationY(param))
+        if number == 2: matrices.append(Matrix.__rotationZ(param))
 
       [appendMatrix(matrices, number) for number in order]
 
       rotationMatrix = np.matmul(matrices[2], (np.matmul(matrices[1], matrices[0])))
     
-    if param['dim'] == 2:
-      alpha = param['rotation']['angle']
+    if _param['dim'] == 2:
+      alpha = _param['rotation']['angle']
       rotationMatrix = np.array([[cos(alpha), -sin(alpha)],
                                  [sin(alpha), cos(alpha)]])
     return rotationMatrix
 
-
-class GraphGen:
+class Graph:
   def random(nodeNum=None, edgeNum=None, dimension=DIMENSION, labelLimit=LABEL_LIMIT):
     
     G = nx.Graph()
