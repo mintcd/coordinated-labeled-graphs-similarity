@@ -22,7 +22,10 @@ def shuffle_graph(G):
   return shuffled_G
 
 def congruent_graph(G, _param=None, shuffle=True, reflect=False):
-  if not _param: _param = generator.param()
+  _, attr = list(G.nodes(data=True))[0]
+  dim = len(attr['pos'])
+
+  if not _param: _param = generator.param(dim)
   rotationMatrix = generator.Matrix.rotation(_param)
 
   img = copy.deepcopy(G)
@@ -31,7 +34,6 @@ def congruent_graph(G, _param=None, shuffle=True, reflect=False):
   for _, attr in img.nodes(data=True):
     attr['pos'] = np.matmul(rotationMatrix, attr['pos']) + _param['translation']
     if reflect : attr['pos'][0] = -attr['pos'][0]
-    attr['pos'] =  attr['pos']
 
   if shuffle: img = shuffle_graph(img)
 
@@ -47,7 +49,6 @@ def similarize_graph(G, _param=None, shuffle=True, reflect=False):
   for _, attr in img.nodes(data=True):
     attr['pos'] = _param['scaling']*np.matmul(rotationMatrix, attr['pos']) + _param['translation']
     if reflect : attr['pos'][0] = -attr['pos'][0]
-    attr['pos'] =  attr['pos']
 
   if shuffle: img = shuffle_graph(img)
 
