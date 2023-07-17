@@ -6,6 +6,68 @@ import networkx as nx
 from transform import Transform2D
 from transform import similar_graph
 from copy import deepcopy
+import os
+
+
+def generate(v, c, dim, equidistant=False):
+    G = nx.Graph()
+    G.v = v
+    G.c = c
+    if equidistant:
+        v = v - v % 3
+    combs = list(combinations(list(range(v)), 2))
+    edges = sample(combs, randint(1, len(combs) - 1))
+
+    if equidistant:
+        G.add_nodes_from(list(range(v)))
+        equil = np.array(
+            [[0, sqrt(3) / 3], [-1 / 2, -sqrt(3) / 6], [1 / 2, -sqrt(3) / 6]]
+        )
+        for i in range(floor(v / 3)):
+            params = get_params(dim)
+            coors = [Transform2D.rotate(p, params[0]) for p in equil]
+            G.nodes[3 * i]["pos"] = coors[0]
+            G.nodes[3 * i]["color"] = choice(list(range(c)))
+            G.nodes[3 * i + 1]["pos"] = coors[1]
+            G.nodes[3 * i + 1]["color"] = choice(list(range(c)))
+            G.nodes[3 * i + 2]["pos"] = coors[2]
+            G.nodes[3 * i + 2]["color"] = choice(list(range(c)))
+
+        G.add_edges_from(combs)
+    else:
+        # Generate random coordinates
+        G.add_nodes_from(list(range(v)))
+        G.add_edges_from(edges)
+        for _, attr in G.nodes(data=True):
+            attr["pos"] = [float(randint(1, 10)) for _ in range(dim)]
+            attr["color"] = choice(list(range(c)))
+
+    H = similar_graph(G, get_params(dim))
+
+    h1 = modify_positions(H)
+    h2 = modify_colors(H)
+    h3 = remove_edges(H)
+
+    if equidistant:
+        folder_name = "dataset\\2d\\triangles\{}".format(v)
+    else:
+        folder_name = "dataset\\2d\\random\{}".format(v)
+
+    os.makedirs(folder_name, exist_ok=True)
+
+    graph_list = [
+        ("G.graphml", G),
+        ("H.graphml", H),
+        ("H1.graphml", h1),
+        ("H2.graphml", h2),
+        ("H3.graphml", h3),
+    ]
+
+    for graph in graph_list:
+        for node in graph[1].nodes:
+            pos = graph[1].nodes[node]["pos"]
+            graph[1].nodes[node]["pos"] = str(pos)
+        nx.write_graphml(graph[1], os.path.join(folder_name, graph[0]))
 
 
 def get_params(dim):
@@ -61,41 +123,3 @@ def remove_edges(H: nx.Graph, rate=0.2):
         if random() < rate:
             h.remove_edge(edge[0], edge[1])
     return h
-
-
-def generate(v, c, dim, equidistant=False):
-    G = nx.Graph()
-    G.v = v
-    G.c = c
-    if equidistant:
-        v = v - v % 3
-    combs = list(combinations(list(range(v)), 2))
-    edges = sample(combs, randint(1, len(combs) - 1))
-
-    if equidistant:
-        G.add_nodes_from(list(range(v)))
-        equil = np.array(
-            [[0, sqrt(3) / 3], [-1 / 2, -sqrt(3) / 6], [1 / 2, -sqrt(3) / 6]]
-        )
-        for i in range(floor(v / 3)):
-            params = get_params(dim)
-            coors = [Transform2D.rotate(p, params[0]) for p in equil]
-            G.nodes[3 * i]["pos"] = coors[0]
-            G.nodes[3 * i]["color"] = choice(list(range(c)))
-            G.nodes[3 * i + 1]["pos"] = coors[1]
-            G.nodes[3 * i + 1]["color"] = choice(list(range(c)))
-            G.nodes[3 * i + 2]["pos"] = coors[2]
-            G.nodes[3 * i + 2]["color"] = choice(list(range(c)))
-
-        G.add_edges_from(combs)
-    else:
-        # Generate random coordinates
-        G.add_nodes_from(list(range(v)))
-        G.add_edges_from(edges)
-        for _, attr in G.nodes(data=True):
-            attr["pos"] = [float(randint(1, 10)) for _ in range(dim)]
-            attr["color"] = choice(list(range(c)))
-
-    H = similar_graph(G, get_params(dim))
-
-    return G, H
