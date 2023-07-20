@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d3" for="node" attr.name="color" attr.type="long" />
+  <key id="d2" for="node" attr.name="pos" attr.type="string" />
+  <key id="d1" for="graph" attr.name="dim" attr.type="long" />
+  <key id="d0" for="graph" attr.name="number_of_colors" attr.type="long" />
+  <graph edgedefault="undirected">
+    <node id="0">
+      <data key="d2">[18.85844342  3.12959205  2.30948439]</data>
+      <data key="d3">1</data>
+    </node>
+    <node id="1">
+      <data key="d2">[ 2.6285211  -3.94047182  5.56583482]</data>
+      <data key="d3">2</data>
+    </node>
+    <node id="2">
+      <data key="d2">[ 4.94989823  7.23274569 -8.35430953]</data>
+      <data key="d3">4</data>
+    </node>
+    <node id="3">
+      <data key="d2">[ 5.56313726 13.57813408  8.47899032]</data>
+      <data key="d3">4</data>
+    </node>
+    <edge source="0" target="1" />
+    <edge source="0" target="2" />
+    <edge source="0" target="3" />
+    <edge source="1" target="2" />
+    <edge source="1" target="3" />
+    <edge source="2" target="3" />
+    <data key="d0">5</data>
+    <data key="d1">3</data>
+  </graph>
+</graphml>

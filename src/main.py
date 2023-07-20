@@ -1,35 +1,32 @@
-import generate
-from visualize import draw, plot
-from infer import similarity_infer
+import graph
+import visualize
 import pprint
+from check import check
+from transform import Transform
 import numpy as np
-import os
-import networkx as nx
-import ast
-
-pp = pprint.PrettyPrinter(width=40, compact=True, indent=2)
+from math import sqrt, pi
+from random import uniform, randint
 
 
-generate.generate(11, 5, 2, False)
+# for i in range(10, 1000, 10):
+#     data = graph.generate(i, randint(int(i / 4), i - 1), 2, True, True)
+#     if i % 100 == 0:
+#         print(i, "vertices")
 
-# loaded_G = nx.read_graphml(os.path.join(folder_name, graph[0]))
+data = graph.generate(60, 50, 3, equidistant=True)
 
-# # Revert node IDs back to integers
-# node_mapping = {}
-# reverted_G = nx.Graph()
-# for old_node in loaded_G.nodes:
-#     new_node = int(old_node)
-#     node_mapping[old_node] = new_node
-#     reverted_G.add_node(new_node, pos=loaded_G.nodes[old_node]["pos"])
+print("Check the original graph and its similar partner")
+check(data.original, data.similar)
+print("\n")
 
-# # Revert edge IDs back to integers
-# for old_edge in loaded_G.edges:
-#     new_edge = (node_mapping[old_edge[0]], node_mapping[old_edge[1]])
-#     reverted_G.add_edge(*new_edge)
+# print("Check the original graph and its similar partner modified some positions")
+# check(data.original, data.posision_modified)
+# print("\n")
 
+# print("Check the original graph and its similar partner modified some colors")
+# check(data.original, data.color_modified)
+# print("\n")
 
-# draw(G)
-# draw(H)
-# draw(h1)
-# draw(h2)
-# draw(h3)
+# print("Check the original graph and its similar partner removed some edges")
+# check(data.original, data.edge_removed)
+# print("\n")
