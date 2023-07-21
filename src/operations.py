@@ -46,7 +46,7 @@ def normalized_clouds(g_cloud, h_cloud):
 
     if len(g_norms) != len(h_norms):
         print("Different number of norms")
-        return False
+        return None, None
 
     ratios = list(map(lambda x, y: x / y, g_norms, h_norms))
 
