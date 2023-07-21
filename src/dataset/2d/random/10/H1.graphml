@@ -2,70 +2,59 @@
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
   <key id="d3" for="node" attr.name="color" attr.type="long" />
   <key id="d2" for="node" attr.name="pos" attr.type="string" />
-  <key id="d1" for="graph" attr.name="number_of_colors" attr.type="long" />
-  <key id="d0" for="graph" attr.name="dim" attr.type="long" />
+  <key id="d1" for="graph" attr.name="dim" attr.type="long" />
+  <key id="d0" for="graph" attr.name="number_of_colors" attr.type="long" />
   <graph edgedefault="undirected">
     <node id="0">
-      <data key="d2">[17.31016512 10.32112315]</data>
+      <data key="d2">[-9.36677146 -7.39406583]</data>
       <data key="d3">1</data>
     </node>
     <node id="1">
-      <data key="d2">[27.627179    3.49769113]</data>
-      <data key="d3">0</data>
+      <data key="d2">[ 2.6939106  10.73589186]</data>
+      <data key="d3">1</data>
     </node>
     <node id="2">
-      <data key="d2">[ -3.16013094 -20.62991851]</data>
+      <data key="d2">[-6.23009209 14.11294275]</data>
       <data key="d3">1</data>
     </node>
     <node id="3">
-      <data key="d2">[1.16834946 9.65645231]</data>
-      <data key="d3">2</data>
+      <data key="d2">[-7.48011276  3.56960928]</data>
+      <data key="d3">1</data>
     </node>
     <node id="4">
-      <data key="d2">[10.6537128   9.48947261]</data>
-      <data key="d3">2</data>
+      <data key="d2">[19.84027453 11.10335391]</data>
+      <data key="d3">1</data>
     </node>
     <node id="5">
-      <data key="d2">[-6.6537128  -3.48947261]</data>
-      <data key="d3">0</data>
+      <data key="d2">[19.79563026  9.03405191]</data>
+      <data key="d3">1</data>
     </node>
     <node id="6">
-      <data key="d2">[-10.31290462   0.33669892]</data>
-      <data key="d3">2</data>
-    </node>
-    <node id="7">
-      <data key="d2">[ 21.30143811 -32.44650176]</data>
-      <data key="d3">2</data>
-    </node>
-    <node id="8">
-      <data key="d2">[-8.6509733  -9.14729467]</data>
-      <data key="d3">2</data>
-    </node>
-    <node id="9">
-      <data key="d2">[ 14.97894521 -14.30742561]</data>
+      <data key="d2">[ 7.97006299 -9.1769491 ]</data>
       <data key="d3">0</data>
     </node>
+    <node id="7">
+      <data key="d2">[  9.80811093 -10.62298672]</data>
+      <data key="d3">0</data>
+    </node>
+    <node id="8">
+      <data key="d2">[-8.99873307  9.0891237 ]</data>
+      <data key="d3">0</data>
+    </node>
+    <node id="9">
+      <data key="d2">[7.13867561 9.34731048]</data>
+      <data key="d3">1</data>
+    </node>
+    <edge source="0" target="4" />
+    <edge source="0" target="3" />
     <edge source="0" target="8" />
-    <edge source="0" target="1" />
-    <edge source="0" target="2" />
-    <edge source="0" target="5" />
-    <edge source="0" target="9" />
-    <edge source="1" target="4" />
     <edge source="1" target="7" />
-    <edge source="1" target="2" />
-    <edge source="1" target="3" />
-    <edge source="2" target="8" />
-    <edge source="2" target="6" />
-    <edge source="2" target="3" />
-    <edge source="2" target="7" />
+    <edge source="2" target="4" />
+    <edge source="3" target="6" />
     <edge source="3" target="8" />
-    <edge source="3" target="5" />
-    <edge source="3" target="9" />
-    <edge source="4" target="6" />
-    <edge source="4" target="5" />
-    <edge source="5" target="6" />
     <edge source="6" target="8" />
+    <edge source="6" target="9" />
     <data key="d0">2</data>
-    <data key="d1">3</data>
+    <data key="d1">2</data>
   </graph>
 </graphml>

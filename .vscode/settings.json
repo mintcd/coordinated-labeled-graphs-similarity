@@ -1,12 +1,20 @@
 {
     "cSpell.words": [
         "asimilar",
+        "convexhull",
         "coor",
+        "edgelist",
+        "mplot",
         "networkx",
         "nodenum",
         "pymongo",
         "scipy",
         "similarize",
-        "untrans"
+        "toolkits",
+        "trisurf",
+        "untrans",
+        "xlabel",
+        "ylabel",
+        "zlabel"
     ]
 }

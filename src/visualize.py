@@ -1,12 +1,8 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import networkx as nx
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 from scipy.spatial import ConvexHull
-
-
-import networkx as nx
-import matplotlib.pyplot as plt
 
 
 def draw(*graph_list):
@@ -73,15 +69,16 @@ def draw(*graph_list):
 
 def plot(*graphs):
     fig = plt.figure()
-    ax = fig.add_subplot(111)
-
-    dimension = None
+    dimension = graphs[0].graph["dim"]
+    if dimension == 2:
+        ax = fig.add_subplot(111)
+    else:
+        ax = fig.add_subplot(111, projection="3d")
     colors = ["red", "blue", "green", "purple", "orange", "cyan"]
 
     for idx, G in enumerate(graphs):
         node_positions = {node: attr["pos"] for node, attr in G.nodes(data=True)}
         node_positions_array = np.array(list(node_positions.values()))
-        dimension = G.graph["dim"]
 
         if dimension == 2:
             nx.draw_networkx(
@@ -126,10 +123,13 @@ def plot(*graphs):
             hull = ConvexHull(node_positions_array)
             hull_vertices = node_positions_array[hull.vertices]
 
+            # Triangulate the hull vertices for plotting trisurf
+            hull_tri = ConvexHull(hull_vertices)
             ax.plot_trisurf(
                 hull_vertices[:, 0],
                 hull_vertices[:, 1],
                 hull_vertices[:, 2],
+                triangles=hull_tri.simplices,
                 alpha=0.3,
                 color=colors[idx],
             )
@@ -137,5 +137,5 @@ def plot(*graphs):
             ax.set_xlabel("X")
             ax.set_ylabel("Y")
             ax.set_zlabel("Z")
-    ax.set_box_aspect(1)
+            ax.set_box_aspect((1, 1, 1))
     plt.show()

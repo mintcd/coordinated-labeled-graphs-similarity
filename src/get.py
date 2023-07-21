@@ -3,7 +3,7 @@ import copy
 from itertools import combinations
 
 
-def get_rank(*clouds):
+def rank(*clouds):
     rank = None
 
     for idx, cloud in enumerate(clouds):
@@ -17,11 +17,7 @@ def get_rank(*clouds):
     return rank
 
 
-def get_adjacency(G):
-    return [(item, list(value.keys())) for item, value in G.adjacency()]
-
-
-def get_cloud(G):
+def cloud(G):
     id = 0
     cloud = {}
     for node, attr in G.nodes(data=True):
@@ -38,11 +34,7 @@ def get_cloud(G):
     return cloud
 
 
-def get_centroid(cloud):
-    pass
-
-
-def get_cliques(pairs, k):
+def cliques(pairs, k):
     cliques = copy.deepcopy(pairs)
     result = copy.deepcopy(pairs)
 
@@ -76,4 +68,20 @@ def get_cliques(pairs, k):
 
         result += clique_plus
 
+    return result
+
+
+def mutual_distances(ids, cloud):
+    result = {}
+    for i in range(len(ids)):
+        for j in range(i + 1, len(ids)):
+            dist = np.linalg.norm(cloud[ids[i]]["pos"] - cloud[ids[j]]["pos"])
+            found = False
+            for key in result:
+                if np.isclose(dist, key):
+                    result[key].append((ids[i], ids[j]))
+                    found = True
+                    break
+            if not found:
+                result[dist] = [(i, j)]
     return result

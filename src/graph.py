@@ -6,6 +6,7 @@ import networkx as nx
 from transform import Transform
 import copy
 import os
+from operations import shuffled_graph, similar_graph
 
 
 class data:
@@ -19,35 +20,9 @@ class data:
         self.edge_removed = edge_removed
 
 
-def similar_graph(G, params):
-    def shuffled_graph(G: nx.Graph):
-        n = G.number_of_nodes()
-        permutation = list(range(0, n))
-        for i in range(n - 1, 0, -1):
-            j = randint(0, i)
-            permutation[i], permutation[j] = permutation[j], permutation[i]
-
-        H = nx.Graph()
-        H.graph["dim"] = G.graph["dim"]
-        H.graph["number_of_colors"] = G.graph["number_of_colors"]
-
-        H.add_nodes_from(list(range(n)))
-        for i in range(n):
-            H.nodes[permutation[i]]["pos"] = G.nodes[i]["pos"]
-            H.nodes[permutation[i]]["color"] = G.nodes[i]["color"]
-        for edge in G.edges():
-            H.add_edge(permutation[edge[0]], permutation[edge[1]])
-
-        return H
-
-    H = copy.deepcopy(G)
-    for _, attr in H.nodes(data=True):
-        attr["pos"] = Transform.similar(attr["pos"], params)
-
-    return shuffled_graph(H)
-
-
-def generate(v, c, dim, same_vectors=False, equidistant=False, write=False):
+def generate(
+    v, c, dim, shuffle=False, same_vectors=False, equidistant=False, write=False
+):
     G = nx.Graph()
     G.graph["number_of_colors"] = c
     G.graph["dim"] = dim
@@ -55,7 +30,7 @@ def generate(v, c, dim, same_vectors=False, equidistant=False, write=False):
         v = v - v % (dim + 1)
 
     combs = list(combinations(list(range(v)), 2))
-    edges = sample(combs, randint(1, int(len(combs))))
+    edges = sample(combs, randint(1, len(combs)))
 
     G.add_nodes_from(list(range(v)))
     G.add_edges_from(edges)
@@ -82,12 +57,14 @@ def generate(v, c, dim, same_vectors=False, equidistant=False, write=False):
     else:
         for _, attr in G.nodes(data=True):
             if same_vectors:
-                attr["pos"] = np.array([float(randint(-10, 10)) for _ in range(dim)])
+                attr["pos"] = np.array([float(randint(-5, 5)) for _ in range(dim)])
             else:
-                attr["pos"] = np.array([float(uniform(-10, 10)) for _ in range(dim)])
+                attr["pos"] = np.array([float(uniform(-5, 5)) for _ in range(dim)])
             attr["color"] = choice(list(range(c)))
 
     H = similar_graph(G, get_params(dim))
+    if shuffle:
+        H = shuffled_graph(H)
 
     H1 = modify(H, on_position=True)
     H2 = modify(H, on_color=True)
