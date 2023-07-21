@@ -86,13 +86,14 @@ def partition_on_distance(g_cloud, h_cloud, rels):
 
 
 def partition_on_combination(similarity, g_cloud, h_cloud):
+    dim = g_cloud[0]["pos"].shape[0]
     result = []
     for per in list(permutations(similarity[1])):
         violate = False
         bases = np.array(
             [
-                [g_cloud[similarity[0][0]]["pos"], g_cloud[similarity[0][1]]["pos"]],
-                [h_cloud[per[0]]["pos"], h_cloud[per[1]]["pos"]],
+                [g_cloud[similarity[0][i]]["pos"] for i in range(dim)],
+                [h_cloud[per[i]]["pos"] for i in range(dim)],
             ]
         )
         combs = {}

@@ -15,7 +15,7 @@ class data:
     ):
         self.original = original
         self.similar = similar
-        self.posision_modified = posision_modified
+        self.position_modified = posision_modified
         self.color_modified = color_modified
         self.edge_removed = edge_removed
 

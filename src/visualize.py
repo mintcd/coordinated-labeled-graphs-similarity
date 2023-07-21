@@ -67,7 +67,7 @@ def draw(*graph_list):
     plt.show()
 
 
-def plot(*graphs):
+def plot(*graphs, label=False):
     fig = plt.figure()
     dimension = graphs[0].graph["dim"]
     if dimension == 2:
@@ -79,6 +79,12 @@ def plot(*graphs):
     for idx, G in enumerate(graphs):
         node_positions = {node: attr["pos"] for node, attr in G.nodes(data=True)}
         node_positions_array = np.array(list(node_positions.values()))
+
+        if label:
+            # Offset the y-coordinate for node labels to make them appear higher
+            y_offset = 0.1  # Adjust this value to control the offset
+            for node, (x, y) in node_positions.items():
+                ax.text(x, y + y_offset, node, ha="center", va="center", fontsize=8)
 
         if dimension == 2:
             nx.draw_networkx(

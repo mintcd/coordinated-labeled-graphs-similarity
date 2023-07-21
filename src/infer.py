@@ -38,9 +38,7 @@ def similarity_infer(G, H):
     if g_cloud is not None:
         print("Patitioning on norm...")
         rels = partition_on_norm(g_cloud, h_cloud)
-
         evaluated = norm_evaluate(rels, g_cloud, h_cloud)
-
         if evaluated:
             rels = evaluated
         else:
@@ -50,21 +48,20 @@ def similarity_infer(G, H):
             for similarity in similarities:
                 rels += partition_on_combination(similarity, g_cloud, h_cloud)
 
-    node_mappings = []
+        node_mappings = []
+        if type(rels) is not bool:
+            for rel in rels:
+                node_mapping = {"sure": [], "unsure": []}
+                for ele in rel:
+                    g_node = g_cloud[ele[0]]["node"]
+                    h_node = g_cloud[ele[1]]["node"]
+                    if len(g_node) == 1:
+                        node_mapping["sure"].append((g_node[0], h_node[0]))
+                    else:
+                        node_mapping["unsure"].append((g_node, h_node))
 
-    if type(rels) is not bool:
-        for rel in rels:
-            node_mapping = {"sure": [], "unsure": []}
-            for ele in rel:
-                g_node = g_cloud[ele[0]]["node"]
-                h_node = g_cloud[ele[1]]["node"]
-                if len(g_node) == 1:
-                    node_mapping["sure"].append((g_node[0], h_node[0]))
-                else:
-                    node_mapping["unsure"].append((g_node, h_node))
-
-            node_mappings.append(node_mapping)
-        print("Similarity inference completed.")
+                node_mappings.append(node_mapping)
+            print("Similarity inference completed.")
         return node_mappings
     return False
 

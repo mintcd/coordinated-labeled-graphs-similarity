@@ -10,7 +10,13 @@ def check(G, H):
         isomorphism_infer(rels, G, H)
 
 
-def similar_test(r, dim, equidistant=False):
+def test(
+    r,
+    dim,
+    equidistant=False,
+    typ="similar",
+):
+    """typle = "similar" | "position-modified" | "color-modified" | "edge-removed"""
     if equidistant:
         times = []
         for i in range(r):
@@ -18,7 +24,17 @@ def similar_test(r, dim, equidistant=False):
                 v=3 * (i + 2), dim=dim, shuffle=True, equidistant=equidistant
             )
             start = time.time()
-            check(data.original, data.similar)
+            if typ == "similar":
+                check(data.original, data.similar)
+            elif typ == "position-modified":
+                check(data.original, data.position_modified)
+            elif typ == "color-modified":
+                check(data.original, data.color_modified)
+            elif typ == "edge-removed":
+                check(data.original, data.edge_removed)
+            else:
+                raise ValueError("Wrong type")
+
             end = time.time()
             times.append(end - start)
         plt.plot(range(6, 3 * r + 6, 3), times, marker="o", linestyle="-", color="b")
@@ -31,7 +47,16 @@ def similar_test(r, dim, equidistant=False):
         for i in range(r):
             data = generate(v=i + 10, dim=dim, shuffle=True, equidistant=equidistant)
             start = time.time()
-            check(data.original, data.similar)
+            if typ == "similar":
+                check(data.original, data.similar)
+            elif typ == "position-modified":
+                check(data.original, data.position_modified)
+            elif typ == "color-modified":
+                check(data.original, data.color_modified)
+            elif typ == "edge-removed":
+                check(data.original, data.edge_removed)
+            else:
+                raise ValueError("Wrong type")
             end = time.time()
             times.append(
                 end - start

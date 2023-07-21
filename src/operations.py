@@ -58,3 +58,11 @@ def normalized_clouds(g_cloud, h_cloud):
         h_cloud[id]["pos"] *= ratios[0]
 
     return g_cloud, h_cloud
+
+
+def normalized_graph(G):
+    centroid = np.average([G.nodes[node]["pos"] for node in G.nodes()])
+    for node in G.nodes():
+        G.nodes[node]["pos"] -= centroid
+    print([G.nodes[node]["pos"] for node in G.nodes()])
+    return G
