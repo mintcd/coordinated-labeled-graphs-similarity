@@ -6,45 +6,60 @@
   <key id="d0" for="graph" attr.name="dim" attr.type="long" />
   <graph edgedefault="undirected">
     <node id="0">
-      <data key="d2">[5.21460745 2.53598225]</data>
-      <data key="d3">3</data>
+      <data key="d2">[4.70928816 3.11750613]</data>
+      <data key="d3">1</data>
     </node>
     <node id="1">
-      <data key="d2">[4.69020229 2.48719474]</data>
-      <data key="d3">0</data>
+      <data key="d2">[5.47129486 3.05414159]</data>
+      <data key="d3">1</data>
     </node>
     <node id="2">
-      <data key="d2">[5.56552928 1.8837676 ]</data>
-      <data key="d3">0</data>
+      <data key="d2">[4.98989293 3.1546563 ]</data>
+      <data key="d3">1</data>
     </node>
     <node id="3">
-      <data key="d2">[4.81789557 2.54787892]</data>
-      <data key="d3">0</data>
+      <data key="d2">[3.85143918 1.88108253]</data>
+      <data key="d3">1</data>
     </node>
     <node id="4">
-      <data key="d2">[4.42852203 1.91786438]</data>
-      <data key="d3">3</data>
+      <data key="d2">[5.67726596 1.06477588]</data>
+      <data key="d3">0</data>
     </node>
     <node id="5">
-      <data key="d2">[4.61657515 1.56835348]</data>
-      <data key="d3">4</data>
+      <data key="d2">[6.00501523 1.43142483]</data>
+      <data key="d3">0</data>
     </node>
     <node id="6">
-      <data key="d2">[4.73297584 1.48810994]</data>
-      <data key="d3">5</data>
+      <data key="d2">[6.11314462 1.69301077]</data>
+      <data key="d3">0</data>
     </node>
     <node id="7">
-      <data key="d2">[5.57682187 2.02469532]</data>
-      <data key="d3">2</data>
+      <data key="d2">[4.00509184 1.41391887]</data>
+      <data key="d3">1</data>
     </node>
     <node id="8">
-      <data key="d2">[5.35687052 1.54615337]</data>
-      <data key="d3">3</data>
+      <data key="d2">[4.17756722 1.18948309]</data>
+      <data key="d3">0</data>
     </node>
-    <edge source="2" target="4" />
-    <edge source="5" target="8" />
+    <edge source="0" target="7" />
+    <edge source="0" target="4" />
+    <edge source="0" target="6" />
+    <edge source="0" target="1" />
+    <edge source="0" target="8" />
+    <edge source="1" target="8" />
+    <edge source="1" target="6" />
+    <edge source="1" target="2" />
+    <edge source="1" target="4" />
+    <edge source="2" target="8" />
+    <edge source="3" target="8" />
+    <edge source="3" target="6" />
+    <edge source="3" target="5" />
+    <edge source="4" target="8" />
+    <edge source="4" target="7" />
+    <edge source="5" target="6" />
+    <edge source="5" target="7" />
     <edge source="7" target="8" />
     <data key="d0">2</data>
-    <data key="d1">6</data>
+    <data key="d1">2</data>
   </graph>
 </graphml>

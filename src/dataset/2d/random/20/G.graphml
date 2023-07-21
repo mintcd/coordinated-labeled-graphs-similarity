@@ -6,111 +6,140 @@
   <key id="d0" for="graph" attr.name="number_of_colors" attr.type="long" />
   <graph edgedefault="undirected">
     <node id="0">
-      <data key="d2">[1.26959328 4.24729479]</data>
-      <data key="d3">0</data>
+      <data key="d2">[3.83749244 0.17618835]</data>
+      <data key="d3">1</data>
     </node>
     <node id="1">
-      <data key="d2">[-3.21134954  4.3167922 ]</data>
-      <data key="d3">1</data>
+      <data key="d2">[4.51107734 2.81025021]</data>
+      <data key="d3">0</data>
     </node>
     <node id="2">
-      <data key="d2">[ 0.84562962 -3.53734356]</data>
-      <data key="d3">1</data>
+      <data key="d2">[-4.41619854 -3.14549854]</data>
+      <data key="d3">0</data>
     </node>
     <node id="3">
-      <data key="d2">[ 4.36854213 -3.80040241]</data>
-      <data key="d3">1</data>
+      <data key="d2">[ 3.13182381 -3.13249819]</data>
+      <data key="d3">0</data>
     </node>
     <node id="4">
-      <data key="d2">[ 0.59059064 -4.78437407]</data>
+      <data key="d2">[-0.7196517   1.15104548]</data>
       <data key="d3">0</data>
     </node>
     <node id="5">
-      <data key="d2">[-4.14850939  0.21836943]</data>
-      <data key="d3">1</data>
+      <data key="d2">[ 2.66102226 -2.79121912]</data>
+      <data key="d3">0</data>
     </node>
     <node id="6">
-      <data key="d2">[1.35483868 2.2969479 ]</data>
+      <data key="d2">[1.54672413 1.53791734]</data>
       <data key="d3">0</data>
     </node>
     <node id="7">
-      <data key="d2">[ 4.2232373  -3.99203197]</data>
+      <data key="d2">[2.93967671 4.04088023]</data>
       <data key="d3">0</data>
     </node>
     <node id="8">
-      <data key="d2">[-1.15788367 -3.72606495]</data>
+      <data key="d2">[0.76480354 0.93794862]</data>
       <data key="d3">0</data>
     </node>
     <node id="9">
-      <data key="d2">[-2.81606401  4.00308079]</data>
-      <data key="d3">0</data>
-    </node>
-    <node id="10">
-      <data key="d2">[-2.74645982 -0.30334219]</data>
-      <data key="d3">0</data>
-    </node>
-    <node id="11">
-      <data key="d2">[ 4.22111087 -2.26301694]</data>
+      <data key="d2">[-1.29691899 -4.51438685]</data>
       <data key="d3">1</data>
     </node>
+    <node id="10">
+      <data key="d2">[-3.85399861  4.67491468]</data>
+      <data key="d3">1</data>
+    </node>
+    <node id="11">
+      <data key="d2">[-0.35896709 -2.74117318]</data>
+      <data key="d3">0</data>
+    </node>
     <node id="12">
-      <data key="d2">[ 1.33354139 -3.27286539]</data>
+      <data key="d2">[-2.35256829 -1.42616914]</data>
       <data key="d3">1</data>
     </node>
     <node id="13">
-      <data key="d2">[-3.84549482 -0.15409675]</data>
+      <data key="d2">[3.45264848 4.25309196]</data>
       <data key="d3">1</data>
     </node>
     <node id="14">
-      <data key="d2">[3.89693654 1.39813737]</data>
+      <data key="d2">[ 1.60984128 -3.19767204]</data>
       <data key="d3">0</data>
     </node>
     <node id="15">
-      <data key="d2">[-1.99189187 -2.06427266]</data>
+      <data key="d2">[ 4.27401769 -0.87191902]</data>
       <data key="d3">0</data>
     </node>
     <node id="16">
-      <data key="d2">[2.49808025 0.14350113]</data>
+      <data key="d2">[3.1238738  1.16601593]</data>
       <data key="d3">0</data>
     </node>
     <node id="17">
-      <data key="d2">[-3.71759095  1.27673656]</data>
+      <data key="d2">[-0.42287913  0.01393053]</data>
       <data key="d3">1</data>
     </node>
     <node id="18">
-      <data key="d2">[-0.71351179 -4.44549156]</data>
-      <data key="d3">0</data>
-    </node>
-    <node id="19">
-      <data key="d2">[-4.99019911  4.99797748]</data>
+      <data key="d2">[-3.04968607 -4.97971744]</data>
       <data key="d3">1</data>
     </node>
-    <edge source="0" target="12" />
-    <edge source="0" target="16" />
-    <edge source="0" target="8" />
+    <node id="19">
+      <data key="d2">[ 0.927266  -1.6260021]</data>
+      <data key="d3">1</data>
+    </node>
+    <edge source="0" target="7" />
     <edge source="0" target="9" />
+    <edge source="0" target="2" />
+    <edge source="0" target="17" />
+    <edge source="0" target="18" />
     <edge source="1" target="13" />
-    <edge source="1" target="11" />
-    <edge source="2" target="5" />
+    <edge source="1" target="14" />
+    <edge source="1" target="8" />
+    <edge source="1" target="15" />
     <edge source="2" target="19" />
     <edge source="2" target="7" />
-    <edge source="3" target="18" />
-    <edge source="4" target="6" />
-    <edge source="4" target="14" />
-    <edge source="5" target="8" />
-    <edge source="5" target="19" />
+    <edge source="2" target="13" />
+    <edge source="2" target="4" />
+    <edge source="2" target="11" />
+    <edge source="3" target="10" />
+    <edge source="3" target="7" />
+    <edge source="3" target="17" />
+    <edge source="4" target="18" />
+    <edge source="4" target="7" />
+    <edge source="4" target="16" />
+    <edge source="4" target="19" />
+    <edge source="4" target="15" />
+    <edge source="4" target="11" />
+    <edge source="4" target="5" />
+    <edge source="5" target="16" />
+    <edge source="5" target="12" />
+    <edge source="5" target="6" />
+    <edge source="6" target="10" />
+    <edge source="6" target="7" />
     <edge source="6" target="18" />
-    <edge source="6" target="13" />
+    <edge source="6" target="16" />
+    <edge source="7" target="12" />
+    <edge source="7" target="9" />
     <edge source="7" target="19" />
+    <edge source="7" target="11" />
     <edge source="7" target="15" />
-    <edge source="10" target="18" />
-    <edge source="11" target="12" />
-    <edge source="11" target="17" />
-    <edge source="12" target="16" />
-    <edge source="12" target="17" />
+    <edge source="7" target="17" />
+    <edge source="8" target="12" />
+    <edge source="8" target="11" />
+    <edge source="8" target="18" />
+    <edge source="8" target="17" />
+    <edge source="9" target="10" />
+    <edge source="9" target="11" />
+    <edge source="10" target="17" />
+    <edge source="11" target="18" />
+    <edge source="11" target="13" />
+    <edge source="11" target="16" />
+    <edge source="12" target="19" />
+    <edge source="12" target="18" />
     <edge source="13" target="17" />
-    <edge source="16" target="17" />
-    <edge source="17" target="18" />
+    <edge source="14" target="19" />
+    <edge source="14" target="16" />
+    <edge source="15" target="18" />
+    <edge source="16" target="18" />
+    <edge source="18" target="19" />
     <data key="d0">2</data>
     <data key="d1">2</data>
   </graph>

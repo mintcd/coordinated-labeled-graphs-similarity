@@ -1,124 +1,72 @@
 import numpy as np
-from get import cloud, cliques, mutual_distances
+from get import cloud, bijections
 import copy
-from itertools import permutations
+from itertools import permutations, product
 import networkx as nx
 from math import factorial
+from operations import normalized_clouds
+from partition import partition_on_norm, partition_on_distance, partition_on_combination
+from validate import validate_bijection
 
 
-def isomorphism_infer(rels, G: nx.Graph, H: nx.Graph):
-    print("Similarity inference completed.")
-    number = 1
-    new_rels = {"one": [], "many": []}
-    for rel in rels:
-        if len(rel[0]) == 1:
-            new_rels["one"].append((rel[0][0], rel[1][0]))
+def isomorphism_infer(node_mappings, G: nx.Graph, H: nx.Graph):
+    print("Testing {} bijections...".format(len(node_mappings)))
+    num = 0
+    for mapping in node_mappings:
+        print("Bijections {}:".format(num))
+        if len(mapping["unsure"]) == 0:
+            validated = validate_bijection(mapping["sure"], G, H)
+            if type(validated) is not bool:
+                return validated
         else:
-            new_rels["many"].append(rel)
-            number *= factorial(len(rel[0]))
-
-    if len(new_rels["many"]) > 0:
-        print(new_rels["many"])
-        print(
-            "Unsure mappings of same-position nodes: {}".format(new_rels["many"][0:9])
-        )
-        one_rels = []
-        for rel in new_rels["many"]:
-            one_rel = []
-            for per in permutations(rel[1]):
-                one_rel.append(list(zip(rel[0], per)))
-            one_rels.append(one_rel)
-
-        def all_combinations(lists):
-            if not lists:
-                return [[]]
-
-            result = []
-            sub_combinations = all_combinations(lists[1:])
-            for x in lists[0]:
-                for sub_sum in sub_combinations:
-                    result.append(x + sub_sum)
-            return result
-
-        combinations = all_combinations(one_rels)
-        print("Derived {} combinations {}".format(number, combinations))
-        print("Validating combinations...")
-        for combination in combinations:
-            last_rel = new_rels["one"] + combination
-            result = validate_bijection(last_rel, G, H)
-            if result:
-                print("Found a valid bijection: {}...".format(last_rel[0:9]))
-                return last_rel
-        return False
-
-    else:
-        print("All mappings:", new_rels["one"][0:9], "...")
-        print("Validate the bijection...")
-        result = validate_bijection(new_rels["one"], G, H)
-        if result:
-            print("Valid bijection: {}...".format(new_rels["one"][0:9]))
-            return new_rels["one"]
-        return False
-
-
-def validate_bijection(rels, G: nx.Graph, H: nx.Graph):
-    rels_dict = {}
-    for rel in rels:
-        rels_dict[rel[0]] = rel[1]
-
-    for i, attr in G.nodes(data=True):
-        if attr["color"] != H.nodes[rels_dict[i]]["color"]:
-            print(
-                "Invalid: G's {} and H's {} have different colors".format(
-                    i, rels_dict[i]
-                )
-            )
-            return False
-        for j, _ in G.nodes(data=True):
-            if G.has_edge(i, j) and not H.has_edge(rels_dict[i], rels_dict[j]):
-                print(
-                    "Invalid: G has edge  {} but H does not have edge  {}".format(
-                        (i, j), (rels_dict[i], rels_dict[j])
+            result = [mapping["sure"]]
+            for unsure_mapping in mapping["unsure"]:
+                new_mappings = []
+                for mapping in mappings:
+                    new_mappings.append(
+                        mapping + bijections(unsure_mapping[0], unsure_mapping[1])
                     )
-                )
-                return False
-            elif not G.has_edge(i, j) and H.has_edge(rels_dict[i], rels_dict[j]):
-                print(
-                    "Invalid: G does not have edge{} but H has edge{}".format(
-                        (i, j), (rels_dict[i], rels_dict[j])
-                    )
-                )
-                return False
-    print("Two graphs are similar")
-    return rels
+                mappings = new_mappings
+        num += 1
+    return False
 
 
 def similarity_infer(G, H):
     print("Translating and scaling...")
-
-    g_cloud, h_cloud = cloud(G), cloud(H)
-
-    g_cloud, h_cloud = normalized_cloud(g_cloud, h_cloud)
+    g_cloud, h_cloud = normalized_clouds(cloud(G), cloud(H))
 
     if g_cloud is not None:
         print("Patitioning on norm...")
         rels = partition_on_norm(g_cloud, h_cloud)
 
-        evaluated = evaluate(rels, g_cloud, h_cloud)
+        evaluated = norm_evaluate(rels, g_cloud, h_cloud)
 
         if evaluated:
             rels = evaluated
         else:
             print("Patitioning on distance...")
-            rels = partition_on_distance(g_cloud, h_cloud, rels)
+            similarities = partition_on_distance(g_cloud, h_cloud, rels)
+            rels = []
+            for similarity in similarities:
+                rels += partition_on_combination(similarity, g_cloud, h_cloud)
 
-        if type(rels) is not bool:
-            result = []
-            for rel in rels:
-                result.append((g_cloud[rel[0]]["node"], h_cloud[rel[1]]["node"]))
-        return result
-    else:
-        return False
+    node_mappings = []
+
+    if type(rels) is not bool:
+        for rel in rels:
+            node_mapping = {"sure": [], "unsure": []}
+            for ele in rel:
+                g_node = g_cloud[ele[0]]["node"]
+                h_node = g_cloud[ele[1]]["node"]
+                if len(g_node) == 1:
+                    node_mapping["sure"].append((g_node[0], h_node[0]))
+                else:
+                    node_mapping["unsure"].append((g_node, h_node))
+
+            node_mappings.append(node_mapping)
+        print("Similarity inference completed.")
+        return node_mappings
+    return False
 
 
 def maximal_linearly_independent(bases):
@@ -133,39 +81,7 @@ def maximal_linearly_independent(bases):
     return np.array(result)
 
 
-def validate_bases(rels, g_cloud, h_cloud):
-    g_combs = {}
-    h_combs = {}
-
-    rank = np.linalg.matrix_rank(np.array([g_cloud[vec]["pos"] for vec in g_cloud]))
-    basis_rank = np.linalg.matrix_rank(rels[0])
-    bases = []
-
-    if basis_rank == rank:
-        bases = maximal_linearly_independent(rels)
-
-    result = []
-
-    for id in g_cloud:
-        comb = np.linalg.solve(np.transpose(bases[0]), g_cloud[id]["pos"])
-        g_combs[tuple(comb)] = id
-
-    for id in h_cloud:
-        comb = np.linalg.solve(np.transpose(bases[1]), h_cloud[id]["pos"])
-        h_combs[tuple(comb)] = id
-
-    for g_key in g_combs.keys():
-        for h_key in h_combs.keys():
-            if np.all(np.isclose(g_key, h_key)):
-                result.append((g_combs[g_key], h_combs[h_key]))
-
-    if len(result) < len(g_combs):
-        return False
-
-    return result
-
-
-def evaluate(rels, g_cloud, h_cloud):
+def norm_evaluate(rels, g_cloud, h_cloud):
     g_rank = np.linalg.matrix_rank(np.array([g_cloud[vec]["pos"] for vec in g_cloud]))
     h_rank = np.linalg.matrix_rank(np.array([h_cloud[vec]["pos"] for vec in h_cloud]))
 
@@ -174,6 +90,8 @@ def evaluate(rels, g_cloud, h_cloud):
         return False
 
     # Find corresponding linearly independent sets
+
+    nodes = [[], []]
 
     pos = [[], []]
     found = False
@@ -207,174 +125,11 @@ def evaluate(rels, g_cloud, h_cloud):
         for id in h_cloud:
             comb = np.linalg.solve(np.transpose(pos[1]), h_cloud[id]["pos"])
             h_combs[tuple(comb)] = id
-
         rels = []
 
         for g_key in g_combs.keys():
             for h_key in h_combs.keys():
                 if np.all(np.isclose(g_key, h_key)):
                     rels.append((g_combs[g_key], h_combs[h_key]))
-
-        return rels
-    else:
-        return False
-
-
-def normalize(G):
-    g = copy.deepcopy(G)
-    cloud = list(
-        map(lambda item: {"id": item[0], "pos": item[1]["pos"]}, G.nodes(data=True))
-    )
-    centroid = sum([item["pos"] for item in cloud]) / G.number_of_nodes()
-    for node, attr in g.nodes(data=True):
-        attr["pos"] -= centroid
-        attr["norm"] = np.linalg.norm(attr["pos"])
-    return g
-
-
-def normalized_cloud(g_cloud, h_cloud):
-    # Translate to O
-    g_centroid = sum([g_cloud[id]["pos"] for id in g_cloud]) / len(g_cloud)
-    for id in g_cloud:
-        g_cloud[id]["pos"] -= g_centroid
-    h_centroid = sum([h_cloud[id]["pos"] for id in h_cloud]) / len(h_cloud)
-    for id in h_cloud:
-        h_cloud[id]["pos"] -= h_centroid
-
-    g_norms = sorted([np.linalg.norm(g_cloud[id]["pos"]) for id in g_cloud])
-    h_norms = sorted([np.linalg.norm(h_cloud[id]["pos"]) for id in h_cloud])
-
-    if len(g_norms) != len(h_norms):
-        print("Different number of norms")
-        return False
-
-    ratios = list(map(lambda x, y: x / y, g_norms, h_norms))
-
-    if not all(np.isclose(ratio, ratios[0]) for ratio in ratios):
-        print("Invalid: Lists of norms have different ratios")
-        return None, None
-
-    for id in h_cloud:
-        h_cloud[id]["pos"] *= ratios[0]
-
-    return g_cloud, h_cloud
-
-
-def partition_on_norm(g_cloud, h_cloud):
-    rels = []
-    results = {"one": [], "many": []}
-
-    g_norms = dict()
-    for vec in g_cloud:
-        norm = np.linalg.norm(g_cloud[vec]["pos"])
-        found = False
-        for key in g_norms:
-            if np.isclose(norm, key):
-                g_norms[key].append(vec)
-                found = True
-                break
-        if not found:
-            g_norms[norm] = [vec]
-
-    h_norms = dict()
-    for vec in h_cloud:
-        norm = np.linalg.norm(h_cloud[vec]["pos"])
-        found = False
-        for key in h_norms:
-            if np.isclose(norm, key):
-                h_norms[key].append(vec)
-                found = True
-                break
-        if not found:
-            h_norms[norm] = [vec]
-
-    for g_norm in sorted(g_norms.keys()):
-        for h_norm in sorted(h_norms.keys()):
-            if np.isclose(g_norm, h_norm):
-                rels.append((g_norms[g_norm], h_norms[h_norm]))
-
-    for rel in rels:
-        if len(rel[0]) != len(rel[1]):
-            print("Relations of diffrent numbers of participants")
-
-        else:
-            if len(rel[0]) == 1 and len(rel[1]) == 1:
-                results["one"].append((rel[0][0], rel[1][0]))
-            else:
-                results["many"].append((rel[0], rel[1]))
-
-    return results
-
-
-def partition_on_distance(g_cloud, h_cloud, rels):
-    dim = g_cloud[0]["pos"].shape[0]
-    result = []
-    print("Computing mutual distances...")
-
-    for rel in rels["many"]:
-        g_mutual = mutual_distances(rel[0], g_cloud)
-        h_mutual = mutual_distances(rel[1], h_cloud)
-
-        for g_key in g_mutual:
-            for h_key in h_mutual:
-                if np.isclose(g_key, h_key):
-                    result.append((g_mutual[g_key], h_mutual[h_key]))
-
-    new_result = []
-
-    print("Get cliques...")
-
-    for pair in result:
-        new_pair = []
-        for ele in pair:
-            new_pair.append(cliques(ele, dim + 1))
-        new_result.append(new_pair)
-
-    result = new_result
-
-    min_length = np.inf
-    max_ele = -np.inf
-    min_rel = []
-    for rel in result:
-        longest_ele = -np.inf
-        for ele in rel[0]:
-            longest_ele = max(len(ele), longest_ele)
-        if longest_ele > max_ele or (
-            longest_ele == max_ele and len(rel[0]) < min_length
-        ):
-            min_rel = rel
-            max_ele = len(ele)
-            min_length = len(rel[0])
-
-    print("Best clique", min_rel)
-
-    similarities = []
-    valid_rels = []
-
-    for des in min_rel[1]:
-        combs = permutations(des)
-        for comb in combs:
-            similarities.append((min_rel[0][0], comb))
-
-    print("Checking {} potential mappings...".format(len(similarities)))
-
-    for similarity in similarities:
-        bases = np.array(
-            [
-                [g_cloud[id]["pos"] for id in similarity[0]],
-                [h_cloud[id]["pos"] for id in similarity[1]],
-            ]
-        )
-        rels = validate_bases(bases, g_cloud, h_cloud)
-        if rels is not False:
-            print("Valid mapping: {}.".format(similarity))
-            print("Valid rel: {}.".format(rels))
-            # valid_rels.append(rels)
-            return rels
-        else:
-            # print("Invalid mapping: {}. Try another one...".format(similarity))
-            pass
-    print("Valid rels", valid_rels)
-    # if valid_rels:
-    #     return valid_rels
+        return [rels]
     return False

@@ -20,9 +20,8 @@ class data:
         self.edge_removed = edge_removed
 
 
-def generate(
-    v, c, dim, shuffle=False, same_vectors=False, equidistant=False, write=False
-):
+def generate(v, dim, shuffle=False, same_vectors=False, equidistant=False, write=False):
+    c = randint(1, v)
     G = nx.Graph()
     G.graph["number_of_colors"] = c
     G.graph["dim"] = dim
@@ -57,7 +56,7 @@ def generate(
     else:
         for _, attr in G.nodes(data=True):
             if same_vectors:
-                attr["pos"] = np.array([float(randint(-5, 5)) for _ in range(dim)])
+                attr["pos"] = np.array([float(randint(-2, 2)) for _ in range(dim)])
             else:
                 attr["pos"] = np.array([float(uniform(-5, 5)) for _ in range(dim)])
             attr["color"] = choice(list(range(c)))

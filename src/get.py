@@ -1,6 +1,6 @@
 import numpy as np
 import copy
-from itertools import combinations
+from itertools import combinations, permutations
 
 
 def rank(*clouds):
@@ -85,3 +85,10 @@ def mutual_distances(ids, cloud):
             if not found:
                 result[dist] = [(i, j)]
     return result
+
+
+def bijections(list1, list2):
+    if len(list1) != len(list2):
+        print("Lists have different lengths")
+        return None
+    return [list(zip(list1, per_list2)) for per_list2 in list(permutations(list2))]
