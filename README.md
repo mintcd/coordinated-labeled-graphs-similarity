@@ -1,3 +1,1 @@
-# A small package for Graph manipulation
-
-# Usage
+# Similarity between coordinated, labeled graphs - geometrical similarity first approach
