@@ -1,6 +1,5 @@
 networkx
 numpy
 scipy
-pymongo
-seaborn
 matplotlib
+pyquaternion
